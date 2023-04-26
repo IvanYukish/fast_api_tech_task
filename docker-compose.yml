@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo:5.0.16-focal
+    shm_size: 1g
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    ports:
+      - 27017:27017
+    command:
+      mongod --quiet --logpath /dev/null
+
+  app:
+    build: .
+    tty: true
+    stdin_open: true
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
