@@ -18,6 +18,14 @@ $ docker-compose up -d
 ```
 The above command will both create the images and start the containers (2 images and 2 containers—one for the FastAPI application and one for the MongoDB database).
 
+## Running tests:
+[test_main.http](test_main.http) contains a typical test cases for our application.
+If you are using pycharm you can simply click on green-run button.
+
+![Screenshot from 2023-04-26 22-08-08.png](..%2F..%2FPictures%2FScreenshot%20from%202023-04-26%2022-08-08.png)
+
+## Application description
+
 For visualizing the application, open up your browser and enter:
 
 * http://0.0.0.0:8000/#/
@@ -37,7 +45,7 @@ $ docker ps
 ```
 To see the database and collection created (database name is: mongo_tech, collection: users) enter in your terminal:
 ```
-$ docker exec -it <container-id> bash
+$ docker exec -it <mongo-container-id> bash
 $ mongosh
 
 ```
@@ -61,7 +69,17 @@ Our file structure is:
 │      ├──router.py
 │      ├──user.py
 │ ├── config.py
-└── docker-compose.yml
+│── test_main.http
+│── pyproject.toml
+│── poetry.lock
+│── main.py
+│── Dockerfile
+│──docker-compose.yml
+│──.gitignore
+│──.env.example
+│──.dockerignore
+└── .env
+
 ```
 In the app directory in [main.py](main.py) file we make all the dependencies and routers importing from the same name files located in ```app``` directory.
 
