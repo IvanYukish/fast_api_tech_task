@@ -1,4 +1,4 @@
-# User authentication using FastAPI (a python frameworks), MongoDB (for database), Docker Compose (for deployment)
+# User authentication using FastAPI, MongoDB, Docker Compose
 ## How to start the application
 
 **The commands:**
