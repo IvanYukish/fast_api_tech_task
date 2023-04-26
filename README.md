@@ -22,7 +22,7 @@ The above command will both create the images and start the containers (2 images
 [test_main.http](test_main.http) contains a typical test cases for our application.
 If you are using pycharm you can simply click on green-run button.
 
-![Screenshot from 2023-04-26 22-08-08.png](..%2F..%2FPictures%2FScreenshot%20from%202023-04-26%2022-08-08.png)
+![example.png](example.png)
 
 ## Application description
 
