@@ -62,7 +62,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 
 @router.get(
-    "/list", response_description="List all users", response_model=list[ShowUserSchema]
+    "/", response_description="List all users", response_model=list[ShowUserSchema]
 )
 async def list_users():
     users = await db["users"].find().to_list(100)

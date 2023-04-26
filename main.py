@@ -10,7 +10,7 @@ from app.v1.router import api_router
 
 
 def get_application():
-    _app = FastAPI()
+    _app = FastAPI(docs_url="/")
     _app.include_router(api_router, prefix=settings.API_V1_STR)
 
     # configure loguru

@@ -42,7 +42,7 @@ class Settings(BaseSettings):
         return build
 
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/users/token")
 
     class Config:
         env_file = ".env"
