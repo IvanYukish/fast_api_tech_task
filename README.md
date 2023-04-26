@@ -7,6 +7,11 @@ First you have to git clone the files by entering in your terminal:
 ```
 $ git clone https://github.com/IvanYukish/fast_api_tech_task.git
 ```  
+Then create a .env file
+```
+cp .env.example .env
+```
+
 Then start the application:
 ```
 $ docker-compose up -d
