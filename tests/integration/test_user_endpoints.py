@@ -3,16 +3,16 @@ from fastapi.testclient import TestClient
 from mongomock_motor import AsyncMongoMockClient
 
 from app.core.db import get_db
-from main import fast_api_app
+from main import app
 
-test_client = TestClient(fast_api_app)
+test_client = TestClient(app)
 
 
 async def get_test_db():
     return AsyncMongoMockClient().get_database("mongo_tech")
 
 
-fast_api_app.dependency_overrides[get_db] = get_test_db
+app.dependency_overrides[get_db] = get_test_db
 
 
 def test_get_users_is_empty():
