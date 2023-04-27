@@ -1,6 +1,9 @@
-import motor.motor_asyncio
+from motor import motor_asyncio
 
 from app.config import settings
 
-client = motor.motor_asyncio.AsyncIOMotorClient(settings.DATABASE_URI)
-db = client.mongo_tech
+
+async def get_db():
+
+    client = motor_asyncio.AsyncIOMotorClient(settings.DATABASE_URI, serverSelectionTimeoutMS=1000)
+    return client["mongo_tech"]

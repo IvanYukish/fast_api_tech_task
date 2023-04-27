@@ -5,7 +5,9 @@ from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 
 from app.config import settings
-from app.core.db import db
+from app.core.db import get_db
+
+db = get_db()
 
 
 def get_password_hash(password: str):

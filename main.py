@@ -18,8 +18,8 @@ def get_application():
     return _app
 
 
-app = get_application()
-app.add_middleware(AuthMiddleware)
+fast_api_app = get_application()
+fast_api_app.add_middleware(AuthMiddleware)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(fast_api_app, host="0.0.0.0", port=8000)

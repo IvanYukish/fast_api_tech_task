@@ -9,9 +9,10 @@ from fastapi import (
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
+from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from app.config import settings
-from app.core.db import db
+from app.core.db import get_db
 from app.user.dependencies import get_password_hash, authenticate_user, create_access_token, get_current_user
 from app.user.schemas import UserSchema, ShowUserSchema, UpdateUserSchema
 
@@ -19,7 +20,7 @@ router = APIRouter()
 
 
 @router.post("/", response_description="Add new user", response_model=UserSchema)
-async def create_user(user: UserSchema):
+async def create_user(user: UserSchema, db: AsyncIOMotorDatabase = Depends(get_db)):
     user.created_at = datetime.now().strftime("%m/%d/%y %H:%M:%S")
     user.password = get_password_hash(user.password)
 
@@ -41,7 +42,10 @@ async def create_user(user: UserSchema):
 
 
 @router.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(
+        form_data: OAuth2PasswordRequestForm = Depends(),
+        db: AsyncIOMotorDatabase = Depends(get_db)
+):
     user = await authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
@@ -71,7 +75,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 @router.get(
     "/", response_description="List all users", response_model=list[ShowUserSchema]
 )
-async def list_users():
+async def list_users(db: AsyncIOMotorDatabase = Depends(get_db)):
     users = await db["users"].find().to_list(100)
     for user in users:
         user["is_active"] = "false"
@@ -92,7 +96,11 @@ async def current_user(current_user: ShowUserSchema = Depends(get_current_user))
 
 
 @router.put("/admin/{user_id}", response_description="Update a user", response_model=UpdateUserSchema)
-async def update_user(user_id: str, user: UpdateUserSchema, current_user: UserSchema = Depends(get_current_user)):
+async def update_user(
+        user_id: str, user: UpdateUserSchema,
+        current_user: UserSchema = Depends(get_current_user),
+        db: AsyncIOMotorDatabase = Depends(get_db)
+):
     if current_user["role"] == "admin":
         user = {k: v for k, v in user.dict().items() if v is not None}
 
@@ -114,7 +122,7 @@ async def update_user(user_id: str, user: UpdateUserSchema, current_user: UserSc
 
 
 @router.delete("/{user_id}", response_description="Delete a user")
-async def delete_user(user_id: str):
+async def delete_user(user_id: str, db: AsyncIOMotorDatabase = Depends(get_db)):
     delete_result = await db["users"].delete_one({"_id": user_id})
 
     if delete_result.deleted_count == 1:
